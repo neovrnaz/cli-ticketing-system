@@ -59,46 +59,52 @@ def payment_method_symbol(pymt):
         return '$'
 
 
-def cost_string_with_symbol(symbol, cost):
+def cost_string(symbol, cost):
     return f'{symbol}{cost}'
 
 
-def cost_to_string(tickets, payment_method):
+def cost_string_after_considering_payment_method(tickets, payment_method):
     usd_cost = calculate_purchase_cost(tickets)
+    currency_symbol = payment_method_symbol(payment_method)
     if payment_method == 'usd':
-        return cost_string_with_symbol(payment_method, usd_cost)
+        return cost_string(currency_symbol, usd_cost)
     elif payment_method == 'bitcoin':
         cost_in_bitcoin = usd_to_bitcoin(usd_cost)
-        return cost_string_with_symbol(payment_method, cost_in_bitcoin)
+        return cost_string(currency_symbol, cost_in_bitcoin)
 
 
-def purchase_tickets(tickets, pur_formatted):
+def confirm_purchase(tickets, string):
+    while True:
+        response = input(f'You are purchasing {tickets} tickets for {string}. Is this order correct? (y/n): ')
+        if response == 'y':
+            purchase_tickets(tickets, string)
+            return tickets
+        elif response == 'n':
+            print(f'Cancelling order...')
+            break
+        elif response == 'exit':
+            print('Okay, come again soon!')
+            sys.exit()
+
+
+def purchase_tickets(tickets, string):
     response = input('Purchase tickets (p): ')
     if response == 'p':
         print('\nPurchase complete...')
-        print(f'Congratulations! You have purchased {tickets} tickets for {pur_formatted}')
-        print('\nHave a nice day!')
+        print(f'Congratulations! You have purchased {tickets} tickets for {string}')
         sys.exit()
     else:
         print('goodbye...')
         sys.exit()
 
 
-def purchase_confirmation(num_of_tickets, purchase_string):
-    while True:
-        response = input(f'Are you sure that you would like to purchase '
-                         f'{num_of_tickets} tickets for {purchase_string}? (y/n): ')
-        if response == 'y':
-            print(f'\n\nPurchase Confirmation:')
-            print('---------------')
-            purchase_tickets(num_of_tickets, purchase_string)
-            return num_of_tickets
-        elif response == 'n':
-            print(f'Cancelling purchase...')
-            break
-        elif response == 'exit':
-            print('Okay, come again soon!')
-            sys.exit()
+def payment_process():
+    ticket_quantity = ticket_quantity_request()
+    payment_method = ask_for_payment_method()
+    show_cost = cost_string_after_considering_payment_method(ticket_quantity, payment_method)
+    confirm_purchase(ticket_quantity, show_cost)
+    purchase_tickets(ticket_quantity, show_cost)
+    return
 
 
 def main():
@@ -106,17 +112,10 @@ def main():
     print('----------------------\n')
 
     print(f'We are currently selling tickets for the {event}')
-
+    print(f'Each ticket costs: ${USD_ticket_cost}\n')
     show_ticket_stock()
 
-    amount_of_tickets_requested = ticket_quantity_request()
-    payment_method = ask_for_payment_method()
-    symbol = payment_method_symbol(payment_method)
-    cost_in_usd = calculate_purchase_cost(amount_of_tickets_requested)
-    payment_method_string = cost_string_after_considering_payment_method(cost_in_usd, payment_method)
-
-    purchase_confirmation(amount_of_tickets_requested, payment_method_string)
-    purchase_tickets(amount_of_tickets_requested, payment_method_string)
+    payment_process()
 
 
 if __name__ == '__main__':
