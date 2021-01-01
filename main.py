@@ -1,18 +1,41 @@
 import sys
 
-tickets_stock = 200
+tickets_stock = 10
+USD_ticket_cost = 14
 event = 'Monty Python Q&A Session'
 
 
-def subtract_tickets(curr_ticket_stock, amt_of_tickets):
-    return curr_ticket_stock - amt_of_tickets
+def calculate_purchase_cost(tickets):
+    return tickets * USD_ticket_cost
 
 
-print('Welcome to the CLI Ticketing System')
-print('----------------------\n')
+def method_of_purchase():
+    while True:
+        try:
+            method = input('Will you be paying using a Credit Card or by Bitcoin? (c/b): ')
+            if method == 'c':
+                print('Selected payment method: Credit Card\n')
+                return '$'
+            elif method == 'b':
+                print('Selected payment method: Bitcoin\n')
+                return '฿'
+        except BaseException as e:
+            print('Hmm, there was an error: ' + str(e))
 
-print(f'We are currently selling tickets for the "{event}"')
-print(f'Our current ticket stock for this event is: {tickets_stock} tickets\n')
+
+def format_purchase(pur_method, cost):
+    return f'{pur_method}{cost}'
+
+
+def show_ticket_stock():
+    if tickets_stock > 100:
+        print(f'There are currently {tickets_stock} tickets remaining.')
+    elif tickets_stock < 50:
+        print(f'Hurry! We only have {tickets_stock} tickets remaining!')
+    elif tickets_stock == 1:
+        print(f'We\'re down to our last ticket!')
+    elif tickets_stock == 0:
+        print(f'Sorry we\'re all out of tickets!')
 
 
 def ask_for_ticket_amount():
@@ -20,35 +43,21 @@ def ask_for_ticket_amount():
         try:
             tickets_request = int(input('How many tickets would you like to purchase?: '))
             while tickets_request > tickets_stock:
-                print(f'Sorry, we only have {tickets_stock} left. Try again...')
+                print(f'Sorry, we only have {tickets_stock} tickets in stock. Try again...\n')
                 tickets_request = int(input('How many tickets would you like to purchase?: '))
             return tickets_request
         except ValueError:
             print('Oops! That was an invalid number. Try again...')
 
 
-def purchase_tickets(tickets):
-    response = input('Purchase tickets (p): ')
-    if response == 'p':
-        print('\nPurchase complete...')
-        print(f'Congratulations! You\'ve purchased {tickets} tickets.')
-        print('Have a great day!')
-        sys.exit()
-    else:
-        print('goodbye...')
-        sys.exit()
-
-
-def ticket_confirmation(num_of_tickets):
+def purchase_confirmation(num_of_tickets, pur_formatted):
     while True:
-        response = input(f'Are you sure that you would like to purchase {num_of_tickets} tickets? (y/n): ')
-        purchase_cost = num_of_tickets * 12
+        response = input(f'Are you sure that you would like to purchase '
+                         f'{num_of_tickets} tickets for {pur_formatted}? (y/n): ')
         if response == 'y':
             print(f'\n\nPurchase Confirmation:')
             print('---------------')
-            print(f'{num_of_tickets} tickets will be ${purchase_cost} please...')
-            purchase_tickets(num_of_tickets)
-            return
+            return num_of_tickets
         elif response == 'n':
             print(f'Cancelling purchase...')
             break
@@ -57,10 +66,33 @@ def ticket_confirmation(num_of_tickets):
             sys.exit()
 
 
-def main():
-    tickets_request = ask_for_ticket_amount()
+def purchase_tickets(tickets, pur_formatted):
+    response = input('Purchase tickets (p): ')
+    if response == 'p':
+        print('\nPurchase complete...')
+        print(f'Congratulations! You have purchased {tickets} tickets for {pur_formatted}')
+        print('\nHave a nice day!')
+        sys.exit()
+    else:
+        print('goodbye...')
+        sys.exit()
 
-    ticket_confirmation(tickets_request)
+
+def main():
+    print('Welcome to the CLI Ticketing System')
+    print('----------------------\n')
+
+    show_ticket_stock()
+
+    tickets_request = ask_for_ticket_amount()
+    purchase_method = method_of_purchase()
+
+    cost_in_usd = calculate_purchase_cost(tickets_request)
+    purchase_formatted = format_purchase(purchase_method, cost_in_usd)
+
+    number_of_tickets_requested = purchase_confirmation(tickets_request, purchase_formatted)
+
+    purchase_tickets(number_of_tickets_requested, purchase_formatted)
 
 
 if __name__ == '__main__':
