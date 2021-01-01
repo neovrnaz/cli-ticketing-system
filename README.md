@@ -4,7 +4,8 @@
 ![](app-preview.gif)
 
 ## Usage
-Clone or download the project files and enter the command below to begin using the app:
+- Download the latest version of Python
+- Clone or download the project files and enter the command below to begin using the app:
 
 ```shell
 python main.py
