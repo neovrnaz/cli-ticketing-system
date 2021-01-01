@@ -1,7 +1,7 @@
 # cli-ticketing-system
 > Purchase tickets to the Monty Python Q&A discussion
 
-![](preview-app.gif)
+![](app-preview.gif)
 
 ## Usage
 Clone or download the project files and enter the command below to begin using the app:
