@@ -11,47 +11,14 @@ def show_ticket_stock():
     if tickets_stock > 100:
         print(f'There are currently {tickets_stock} tickets remaining.')
     elif tickets_stock < 50:
-        print(f'Hurry! We only have {tickets_stock} tickets remaining!')
+        print(f'Buy now! We only have {tickets_stock} tickets remaining!\n')
     elif tickets_stock == 1:
         print(f'We\'re down to our last ticket!')
     elif tickets_stock == 0:
         print(f'Sorry we\'re all out of tickets!')
 
 
-def calculate_purchase_cost(tickets):
-    return tickets * USD_ticket_cost
-
-
-def bitcoin_to_usd(cost):
-    return cost / bitcoin_exchange_rate
-
-
-def method_of_payment():
-    while True:
-        try:
-            method = input('Will you be paying using a Credit Card or by Bitcoin? (c/b): ')
-            if method == 'c':
-                print('Selected payment method: Credit Card\n')
-                return 'dollar'
-            elif method == 'b':
-                print('Selected payment method: Bitcoin\n')
-                return 'bitcoin'
-        except BaseException as e:
-            print('Hmm, there was an error: ' + str(e))
-
-
-def payment_method_symbol(pymt):
-    if pymt == 'bitcoin':
-        return '฿'
-    elif pymt == 'dollar':
-        return '$'
-
-
-def format_purchase(pur_method, cost):
-    return f'{pur_method}{cost}'
-
-
-def ask_for_ticket_amount():
+def ticket_quantity_request():
     while True:
         try:
             tickets_request = int(input('How many tickets would you like to purchase?: '))
@@ -61,6 +28,50 @@ def ask_for_ticket_amount():
             return tickets_request
         except ValueError:
             print('Oops! That was an invalid number. Try again...')
+
+
+def calculate_purchase_cost(tickets):
+    return tickets * USD_ticket_cost
+
+
+def usd_to_bitcoin(cost):
+    return cost / bitcoin_exchange_rate
+
+
+def ask_for_payment_method():
+    while True:
+        try:
+            payment_method = input('Will you be paying using a Credit Card or by Bitcoin? (c/b): ')
+            if payment_method == 'c':
+                print('\nSelected payment method: Credit Card\n')
+                return 'usd'
+            elif payment_method == 'b':
+                print('\nSelected payment method: Bitcoin\n')
+                return 'bitcoin'
+        except BaseException as e:
+            print('Hmm, there was an error: ' + str(e))
+
+
+def payment_method_symbol(pymt):
+    if pymt == 'bitcoin':
+        return '฿'
+    elif pymt == 'usd':
+        return '$'
+
+
+def cost_as_string(symbol, cost):
+    return f'{symbol}{cost}'
+
+
+def payment_method_to_string(usd_cost, payment_method):
+    if payment_method == 'usd':
+        cost_in_usd = usd_to_bitcoin(usd_cost)
+        payment_method_usd = cost_as_string(payment_method, cost_in_usd)
+        return payment_method_usd
+    elif payment_method == 'bitcoin':
+        cost_in_bitcoin = usd_to_bitcoin(usd_cost)
+        payment_method_bitcoin = cost_as_string(payment_method, cost_in_bitcoin)
+        return payment_method_bitcoin
 
 
 def purchase_confirmation(num_of_tickets, pur_formatted):
@@ -99,16 +110,15 @@ def main():
 
     show_ticket_stock()
 
-    tickets_request = ask_for_ticket_amount()
-    payment_method = method_of_payment()
-    payment_method_symbol = payment_method_symbol(payment_method)
+    amount_of_tickets_requested = ticket_quantity_request()
+    payment_method = ask_for_payment_method()
+    symbol = payment_method_symbol(payment_method)
+    cost_in_usd = calculate_purchase_cost(amount_of_tickets_requested)
+    payment_method_string = payment_method_to_string(cost_in_usd, payment_method)
 
-    cost_in_usd = calculate_purchase_cost(tickets_request)
-    purchase_formatted = format_purchase(payment_method_symbol, cost_in_usd)
+    purchase_confirmation(amount_of_tickets_requested, payment_method_string)
 
-    number_of_tickets_requested = purchase_confirmation(tickets_request, purchase_formatted)
-
-    purchase_tickets(number_of_tickets_requested, purchase_formatted)
+    purchase_tickets(amount_of_tickets_requested, payment_method_string)
 
 
 if __name__ == '__main__':
