@@ -5,7 +5,7 @@ tickets_stock = 200
 USD_TICKET_PRICE = 14
 event = 'Monty Python Q&A Session'
 bitcoin_exchange_rate = bitcoin.bitcoin_price()
-name = input('What is your name?: ')
+name = input('What is your name?: ').title()
 
 
 def print_welcome():
@@ -63,7 +63,7 @@ def ask_for_payment_method():
             else:
                 print(f'Hmm... I didn\'t understand {payment_method}')
         except BaseException as e:
-            print('Hmm, there was an error: ' + str(e))
+            print('\nHmm, there was an error: ' + str(e))
 
 
 def payment_method_symbol(pymt):
@@ -111,7 +111,7 @@ def purchase_tickets(tickets, string):
 
         print(f'\n\nPurchase Confirmation for {name}:')
         print('---------------')
-        print(f'Your payment of {string} was received.')
+        print(f'Thank you {name}! Your payment of {string} was received.')
         print('\n***')
         print(f'Congratulations! You now have {tickets} tickets to the "{event}"')
         print('***')
@@ -131,7 +131,6 @@ def payment_process():
 
 
 def main():
-
     print_welcome()
     show_ticket_stock()
     payment_process()
