@@ -75,23 +75,31 @@ def cost_string_after_considering_payment_method(tickets, payment_method):
 
 def confirm_purchase(tickets, string):
     while True:
-        response = input(f'You are purchasing {tickets} tickets for {string}. Is this order correct? (y/n): ')
+        print('(You can cancel by entering (e))')
+        response = input(f'You are purchasing {tickets} tickets for {string}. '
+                         f'\nIs this order correct? (y/n): ')
         if response == 'y':
             purchase_tickets(tickets, string)
             return tickets
         elif response == 'n':
             print(f'Cancelling order...')
             break
-        elif response == 'exit':
-            print('Okay, come again soon!')
+        elif response == 'e':
+            print('Your order was canceled')
             sys.exit()
+        else:
+            print(f'\nHmm, I don\'t recognize the option "{response}"...\n')
 
 
 def purchase_tickets(tickets, string):
     response = input('Purchase tickets (p): ')
     if response == 'p':
         print('\nPurchase complete...')
-        print(f'Congratulations! You have purchased {tickets} tickets for {string}')
+
+        print(f'\n\nPurchase Confirmation:')
+        print('---------------')
+        print(f'Your payment of {string} was received.')
+        print(f'\n*** Congratulations! You now have {tickets} tickets to the {event} ***')
         sys.exit()
     else:
         print('goodbye...')
