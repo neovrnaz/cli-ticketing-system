@@ -16,16 +16,20 @@ print(f'Our current ticket stock for this event is: {tickets_stock} tickets\n')
 
 
 def ask_for_ticket_amount():
-    try:
-        tickets_request = int(input('How many tickets would you like to purchase?: '))
-        return tickets_request
-    except ValueError:
-        print('Oops! That was an invalid number. Try again...')
+    while True:
+        try:
+            tickets_request = int(input('How many tickets would you like to purchase?: '))
+            while tickets_request > tickets_stock:
+                print(f'Sorry, we only have {tickets_stock} left. Try again...')
+                tickets_request = int(input('How many tickets would you like to purchase?: '))
+            return tickets_request
+        except ValueError:
+            print('Oops! That was an invalid number. Try again...')
 
 
 def ticket_confirmation(num_of_tickets):
     while True:
-        confirmation_response = input(f'Are you sure that you would like to purchase {num_of_tickets}? (y/n): ')
+        confirmation_response = input(f'Are you sure that you would like to purchase {num_of_tickets} tickets? (y/n): ')
         purchase_cost = num_of_tickets * 12
         if confirmation_response == 'y':
             print(f'Purchase Confirmation: \n${num_of_tickets} will be{purchase_cost} please...')
