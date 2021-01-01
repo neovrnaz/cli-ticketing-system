@@ -2,20 +2,30 @@ import sys
 import bitcoin
 
 tickets_stock = 200
-USD_ticket_cost = 14
+USD_TICKET_PRICE = 14
 event = 'Monty Python Q&A Session'
 bitcoin_exchange_rate = bitcoin.bitcoin_price()
 
 
+def print_welcome():
+    if tickets_stock == 0:
+        sys.exit('Sorry we\'re all out of tickets!')
+
+    print('\n----------------------\n')
+    print('Welcome to the CLI Ticketing System')
+    print('----------------------\n')
+
+    print(f'We are currently selling tickets for the {event}')
+    print(f'Each ticket costs: ${USD_TICKET_PRICE}\n')
+
+
 def show_ticket_stock():
-    if tickets_stock > 100:
-        print(f'There are currently {tickets_stock} tickets remaining.')
-    elif tickets_stock < 50:
+    if tickets_stock == 1:
+        print('We\'re down to our last ticket!')
+    elif 1 < tickets_stock < 100:
         print(f'Buy now! We only have {tickets_stock} tickets remaining!\n')
-    elif tickets_stock == 1:
-        print(f'We\'re down to our last ticket!')
-    elif tickets_stock == 0:
-        print(f'Sorry we\'re all out of tickets!')
+    elif tickets_stock > 100:
+        print(f'There are currently {tickets_stock} tickets remaining.')
 
 
 def ticket_quantity_request():
@@ -31,7 +41,7 @@ def ticket_quantity_request():
 
 
 def calculate_purchase_cost(tickets):
-    return tickets * USD_ticket_cost
+    return tickets * USD_TICKET_PRICE
 
 
 def usd_to_bitcoin(cost):
@@ -119,14 +129,9 @@ def payment_process():
 
 
 def main():
-    print('\n----------------------\n')
-    print('Welcome to the CLI Ticketing System')
-    print('----------------------\n')
 
-    print(f'We are currently selling tickets for the {event}')
-    print(f'Each ticket costs: ${USD_ticket_cost}\n')
+    print_welcome()
     show_ticket_stock()
-
     payment_process()
 
 
