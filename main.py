@@ -5,12 +5,14 @@ tickets_stock = 200
 USD_TICKET_PRICE = 14
 event = 'Monty Python Q&A Session'
 bitcoin_exchange_rate = bitcoin.bitcoin_price()
+name = input('What is your name?: ')
 
 
 def print_welcome():
     if tickets_stock == 0:
         sys.exit('Sorry we\'re all out of tickets!')
 
+    print(f'\nHello {name}!')
     print('\n----------------------\n')
     print('Welcome to the CLI Ticketing System')
     print('----------------------\n')
@@ -107,7 +109,7 @@ def purchase_tickets(tickets, string):
     if response == 'p':
         print('\nPurchase complete...')
 
-        print(f'\n\nPurchase Confirmation:')
+        print(f'\n\nPurchase Confirmation for {name}:')
         print('---------------')
         print(f'Your payment of {string} was received.')
         print('\n***')
