@@ -27,26 +27,40 @@ def ask_for_ticket_amount():
             print('Oops! That was an invalid number. Try again...')
 
 
+def purchase_tickets(tickets):
+    response = input('Purchase tickets (p): ')
+    if response == 'p':
+        print('\nPurchase complete...')
+        print(f'Congratulations! You\'ve purchased {tickets} tickets.')
+        print('Have a great day!')
+        sys.exit()
+    else:
+        print('goodbye...')
+        sys.exit()
+
+
 def ticket_confirmation(num_of_tickets):
     while True:
-        confirmation_response = input(f'Are you sure that you would like to purchase {num_of_tickets} tickets? (y/n): ')
+        response = input(f'Are you sure that you would like to purchase {num_of_tickets} tickets? (y/n): ')
         purchase_cost = num_of_tickets * 12
-        if confirmation_response == 'y':
-            print(f'Purchase Confirmation: \n${num_of_tickets} will be{purchase_cost} please...')
+        if response == 'y':
+            print(f'\n\nPurchase Confirmation:')
+            print('---------------')
+            print(f'{num_of_tickets} tickets will be ${purchase_cost} please...')
+            purchase_tickets(num_of_tickets)
             return
-        elif confirmation_response == 'n':
+        elif response == 'n':
             print(f'Cancelling purchase...')
             break
-        elif confirmation_response == 'exit':
+        elif response == 'exit':
             print('Okay, come again soon!')
             sys.exit()
 
 
 def main():
-    while True:
-        tickets_request = ask_for_ticket_amount()
+    tickets_request = ask_for_ticket_amount()
 
-        ticket_confirmation(tickets_request)
+    ticket_confirmation(tickets_request)
 
 
 if __name__ == '__main__':
