@@ -1,7 +1,7 @@
-# basic-python-cli
+# cli-ticketing-system
 > Purchase tickets to the Monty Python Q&A discussion
 
-![](preview.gif)
+![](preview-app.gif)
 
 ## Usage
 Clone or download the project files and enter the command below to begin using the app:
@@ -12,13 +12,9 @@ python main.py
 The comedy group Monty Python is having a Q&A discussion and this CLI app
 intends to provide a gateway for ordering tickets into the session
 
-This app:
-* Shows the number of tickets remaining
-* Personalized experience
-* Proper reporting of errors
-* Users can request a number of tickets while also being shown the cost before purchasing
-* User can confirm their order
-
-
+This app allows users to:
+* Order tickets to a fictional Q&A event
+* Create and review their ticket order
+* Pay in Bitcoin using the markets exchange rate (in real time)
 
 ## License:  [MIT](LICENSE)
