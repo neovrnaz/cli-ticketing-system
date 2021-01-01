@@ -63,31 +63,24 @@ def cost_as_string(symbol, cost):
     return f'{symbol}{cost}'
 
 
-def payment_method_to_string(usd_cost, payment_method):
+# def payment_method_to_string(usd_cost, payment_method):
+#     if payment_method == 'usd':
+#         cost_in_usd = usd_to_bitcoin(usd_cost)
+#         payment_method_usd = cost_as_string(payment_method, cost_in_usd)
+#         return payment_method_usd
+#     elif payment_method == 'bitcoin':
+#         cost_in_bitcoin = usd_to_bitcoin(usd_cost)
+#         payment_method_bitcoin = cost_as_string(payment_method, cost_in_bitcoin)
+#         return payment_method_bitcoin
+
+
+def payment_method_to_string(tickets, payment_method):
+    usd_cost = calculate_purchase_cost(tickets)
     if payment_method == 'usd':
-        cost_in_usd = usd_to_bitcoin(usd_cost)
-        payment_method_usd = cost_as_string(payment_method, cost_in_usd)
-        return payment_method_usd
+        return cost_as_string(payment_method, usd_cost)
     elif payment_method == 'bitcoin':
         cost_in_bitcoin = usd_to_bitcoin(usd_cost)
-        payment_method_bitcoin = cost_as_string(payment_method, cost_in_bitcoin)
-        return payment_method_bitcoin
-
-
-def purchase_confirmation(num_of_tickets, pur_formatted):
-    while True:
-        response = input(f'Are you sure that you would like to purchase '
-                         f'{num_of_tickets} tickets for {pur_formatted}? (y/n): ')
-        if response == 'y':
-            print(f'\n\nPurchase Confirmation:')
-            print('---------------')
-            return num_of_tickets
-        elif response == 'n':
-            print(f'Cancelling purchase...')
-            break
-        elif response == 'exit':
-            print('Okay, come again soon!')
-            sys.exit()
+        return cost_as_string(payment_method, cost_in_bitcoin)
 
 
 def purchase_tickets(tickets, pur_formatted):
@@ -100,6 +93,23 @@ def purchase_tickets(tickets, pur_formatted):
     else:
         print('goodbye...')
         sys.exit()
+
+
+def purchase_confirmation(num_of_tickets, purchase_string):
+    while True:
+        response = input(f'Are you sure that you would like to purchase '
+                         f'{num_of_tickets} tickets for {purchase_string}? (y/n): ')
+        if response == 'y':
+            print(f'\n\nPurchase Confirmation:')
+            print('---------------')
+            purchase_tickets(num_of_tickets, purchase_string)
+            return num_of_tickets
+        elif response == 'n':
+            print(f'Cancelling purchase...')
+            break
+        elif response == 'exit':
+            print('Okay, come again soon!')
+            sys.exit()
 
 
 def main():
@@ -117,7 +127,6 @@ def main():
     payment_method_string = payment_method_to_string(cost_in_usd, payment_method)
 
     purchase_confirmation(amount_of_tickets_requested, payment_method_string)
-
     purchase_tickets(amount_of_tickets_requested, payment_method_string)
 
 
