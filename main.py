@@ -4,28 +4,7 @@ import bitcoin
 tickets_stock = 10
 USD_ticket_cost = 14
 event = 'Monty Python Q&A Session'
-
-
-def calculate_purchase_cost(tickets):
-    return tickets * USD_ticket_cost
-
-
-def method_of_purchase():
-    while True:
-        try:
-            method = input('Will you be paying using a Credit Card or by Bitcoin? (c/b): ')
-            if method == 'c':
-                print('Selected payment method: Credit Card\n')
-                return '$'
-            elif method == 'b':
-                print('Selected payment method: Bitcoin\n')
-                return '฿'
-        except BaseException as e:
-            print('Hmm, there was an error: ' + str(e))
-
-
-def format_purchase(pur_method, cost):
-    return f'{pur_method}{cost}'
+bitcoin_exchange_rate = bitcoin.bitcoin_price()
 
 
 def show_ticket_stock():
@@ -37,6 +16,39 @@ def show_ticket_stock():
         print(f'We\'re down to our last ticket!')
     elif tickets_stock == 0:
         print(f'Sorry we\'re all out of tickets!')
+
+
+def calculate_purchase_cost(tickets):
+    return tickets * USD_ticket_cost
+
+
+def bitcoin_to_usd(cost):
+    return cost / bitcoin_exchange_rate
+
+
+def method_of_payment():
+    while True:
+        try:
+            method = input('Will you be paying using a Credit Card or by Bitcoin? (c/b): ')
+            if method == 'c':
+                print('Selected payment method: Credit Card\n')
+                return 'dollar'
+            elif method == 'b':
+                print('Selected payment method: Bitcoin\n')
+                return 'bitcoin'
+        except BaseException as e:
+            print('Hmm, there was an error: ' + str(e))
+
+
+def payment_method_symbol(pymt):
+    if pymt == 'bitcoin':
+        return '฿'
+    elif pymt == 'dollar':
+        return '$'
+
+
+def format_purchase(pur_method, cost):
+    return f'{pur_method}{cost}'
 
 
 def ask_for_ticket_amount():
@@ -83,13 +95,16 @@ def main():
     print('Welcome to the CLI Ticketing System')
     print('----------------------\n')
 
+    print(f'We are currently selling tickets for the {event}')
+
     show_ticket_stock()
 
     tickets_request = ask_for_ticket_amount()
-    purchase_method = method_of_purchase()
+    payment_method = method_of_payment()
+    payment_method_symbol = payment_method_symbol(payment_method)
 
     cost_in_usd = calculate_purchase_cost(tickets_request)
-    purchase_formatted = format_purchase(purchase_method, cost_in_usd)
+    purchase_formatted = format_purchase(payment_method_symbol, cost_in_usd)
 
     number_of_tickets_requested = purchase_confirmation(tickets_request, purchase_formatted)
 

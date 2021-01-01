@@ -10,8 +10,9 @@ def bitcoin_price():
     url = "http://api.coindesk.com/v1/bpi/currentprice/EUR.json"
 
     json_url = urllib2.urlopen(url)
-
     json_object = json.load(json_url)
 
-    print(json_object['bpi']['USD']['code'])
-    print(json_object['bpi']['USD']['rate'])
+    exchange_rate = json_object['bpi']['USD']['rate']
+
+    return float(exchange_rate.replace(',', ''))
+
