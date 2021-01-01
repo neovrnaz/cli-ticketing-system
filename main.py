@@ -59,28 +59,17 @@ def payment_method_symbol(pymt):
         return '$'
 
 
-def cost_as_string(symbol, cost):
+def cost_string_with_symbol(symbol, cost):
     return f'{symbol}{cost}'
 
 
-# def payment_method_to_string(usd_cost, payment_method):
-#     if payment_method == 'usd':
-#         cost_in_usd = usd_to_bitcoin(usd_cost)
-#         payment_method_usd = cost_as_string(payment_method, cost_in_usd)
-#         return payment_method_usd
-#     elif payment_method == 'bitcoin':
-#         cost_in_bitcoin = usd_to_bitcoin(usd_cost)
-#         payment_method_bitcoin = cost_as_string(payment_method, cost_in_bitcoin)
-#         return payment_method_bitcoin
-
-
-def payment_method_to_string(tickets, payment_method):
+def cost_to_string(tickets, payment_method):
     usd_cost = calculate_purchase_cost(tickets)
     if payment_method == 'usd':
-        return cost_as_string(payment_method, usd_cost)
+        return cost_string_with_symbol(payment_method, usd_cost)
     elif payment_method == 'bitcoin':
         cost_in_bitcoin = usd_to_bitcoin(usd_cost)
-        return cost_as_string(payment_method, cost_in_bitcoin)
+        return cost_string_with_symbol(payment_method, cost_in_bitcoin)
 
 
 def purchase_tickets(tickets, pur_formatted):
@@ -124,7 +113,7 @@ def main():
     payment_method = ask_for_payment_method()
     symbol = payment_method_symbol(payment_method)
     cost_in_usd = calculate_purchase_cost(amount_of_tickets_requested)
-    payment_method_string = payment_method_to_string(cost_in_usd, payment_method)
+    payment_method_string = cost_string_after_considering_payment_method(cost_in_usd, payment_method)
 
     purchase_confirmation(amount_of_tickets_requested, payment_method_string)
     purchase_tickets(amount_of_tickets_requested, payment_method_string)
