@@ -1,9 +1,7 @@
 # basic-python-cli
 > Purchase tickets to the Monty Python Q&A discussion
 
-<p align="center">
-  <img src="https://via.placeholder.com/728x350.png?text=Placeholder+Image" width="600" alt="Sublime's custom image"/>
-</p>
+![](preview.gif)
 
 ## Usage
 Clone or download the project files and enter the command below to begin using the app:

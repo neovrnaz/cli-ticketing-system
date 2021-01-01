@@ -1,7 +1,7 @@
 import sys
 import bitcoin
 
-tickets_stock = 10
+tickets_stock = 200
 USD_ticket_cost = 14
 event = 'Monty Python Q&A Session'
 bitcoin_exchange_rate = bitcoin.bitcoin_price()
@@ -23,11 +23,11 @@ def ticket_quantity_request():
         try:
             tickets_request = int(input('How many tickets would you like to purchase?: '))
             while tickets_request > tickets_stock:
-                print(f'Sorry, we only have {tickets_stock} tickets in stock. Try again...\n')
+                print(f'Sorry, we only have {tickets_stock} tickets in stock! Try again...\n')
                 tickets_request = int(input('How many tickets would you like to purchase?: '))
             return tickets_request
         except ValueError:
-            print('Oops! That was an invalid number. Try again...')
+            print('\nOops! That was an invalid number. Try again...')
 
 
 def calculate_purchase_cost(tickets):
@@ -48,6 +48,8 @@ def ask_for_payment_method():
             elif payment_method == 'b':
                 print('\nSelected payment method: Bitcoin\n')
                 return 'bitcoin'
+            else:
+                print(f'Hmm... I didn\'t understand {payment_method}')
         except BaseException as e:
             print('Hmm, there was an error: ' + str(e))
 
@@ -75,7 +77,6 @@ def cost_string_after_considering_payment_method(tickets, payment_method):
 
 def confirm_purchase(tickets, string):
     while True:
-        print('(You can cancel by entering (e))')
         response = input(f'You are purchasing {tickets} tickets for {string}. '
                          f'\nIs this order correct? (y/n): ')
         if response == 'y':
@@ -84,7 +85,7 @@ def confirm_purchase(tickets, string):
         elif response == 'n':
             print(f'Cancelling order...')
             break
-        elif response == 'e':
+        elif response == ('exit' or 'e' or 'c' or 'cancel'):
             print('Your order was canceled')
             sys.exit()
         else:
@@ -99,7 +100,9 @@ def purchase_tickets(tickets, string):
         print(f'\n\nPurchase Confirmation:')
         print('---------------')
         print(f'Your payment of {string} was received.')
-        print(f'\n*** Congratulations! You now have {tickets} tickets to the {event} ***')
+        print('\n***')
+        print(f'Congratulations! You now have {tickets} tickets to the "{event}"')
+        print('***')
         sys.exit()
     else:
         print('goodbye...')
@@ -116,6 +119,7 @@ def payment_process():
 
 
 def main():
+    print('\n----------------------\n')
     print('Welcome to the CLI Ticketing System')
     print('----------------------\n')
 
