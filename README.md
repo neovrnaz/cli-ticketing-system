@@ -11,7 +11,7 @@
 python main.py
 ```
 The comedy group Monty Python is having a Q&A discussion and this CLI app
-intends to provide a gateway for ordering tickets into the session
+intends to provide a gateway for ordering tickets
 
 This app allows users to:
 * Order tickets to a fictional Q&A event

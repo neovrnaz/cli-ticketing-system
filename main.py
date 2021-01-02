@@ -6,6 +6,7 @@ USD_TICKET_PRICE = 14
 event = 'Monty Python Q&A Session'
 bitcoin_exchange_rate = bitcoin.bitcoin_price()
 name = input('What is your name?: ').title()
+SERVICE_CHARGE = 2
 
 
 def print_welcome():
@@ -43,7 +44,7 @@ def ticket_quantity_request():
 
 
 def calculate_purchase_cost(tickets):
-    return tickets * USD_TICKET_PRICE
+    return (tickets * USD_TICKET_PRICE) + SERVICE_CHARGE
 
 
 def usd_to_bitcoin(cost):
@@ -66,10 +67,10 @@ def ask_for_payment_method():
             print('\nHmm, there was an error: ' + str(e))
 
 
-def payment_method_symbol(pymt):
-    if pymt == 'bitcoin':
+def payment_method_symbol(payment_method):
+    if payment_method == 'bitcoin':
         return '฿'
-    elif pymt == 'usd':
+    elif payment_method == 'usd':
         return '$'
 
 
@@ -121,7 +122,7 @@ def purchase_tickets(tickets, string):
         sys.exit()
 
 
-def payment_process():
+def create_order():
     ticket_quantity = ticket_quantity_request()
     payment_method = ask_for_payment_method()
     show_cost = cost_string_after_considering_payment_method(ticket_quantity, payment_method)
@@ -131,9 +132,10 @@ def payment_process():
 
 
 def main():
+
     print_welcome()
     show_ticket_stock()
-    payment_process()
+    create_order()
 
 
 if __name__ == '__main__':
